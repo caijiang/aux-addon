@@ -2,7 +2,7 @@ select(2, ...) 'aux.gui'
 
 local aux = require 'aux'
 
-M.font = [[Fonts\ARIALN.TTF]]
+M.font = [[Fonts\ARKai_T.ttf]]
 
 M.font_size = aux.immutable-{
 	small = 13,
