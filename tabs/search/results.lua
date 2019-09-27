@@ -210,7 +210,7 @@ function start_real_time_scan(query, search, continuation)
 	}
 end
 
-function start_search(queries, continuation)
+function start_search(queries, continuation, fun)
 	local current_query, current_page, total_queries, start_query, start_page
 
 	local search = current_search()
@@ -230,6 +230,7 @@ function start_search(queries, continuation)
 
 
 	scan.start{
+		fun = fun,
 		type = 'list',
 		queries = queries,
         alert_validator = search.alert_validator,
@@ -297,7 +298,7 @@ function start_search(queries, continuation)
 	}
 end
 
-function M.execute(_, resume, real_time)
+function M.execute(_, resume, real_time, fun)
 
 	if resume then
 		real_time = current_search().real_time
@@ -360,7 +361,7 @@ function M.execute(_, resume, real_time)
 			query.blizzard_query.first_page = current_search().first_page
 			query.blizzard_query.last_page = current_search().last_page
 		end
-		start_search(queries, continuation)
+		start_search(queries, continuation, fun)
 	end
 end
 

@@ -35,6 +35,8 @@ frame.saved.recent:SetWidth(364.5)
 frame.saved.recent:SetPoint('TOPRIGHT', 0, 0)
 frame.saved.recent:SetPoint('BOTTOMRIGHT', 0, 0)
 
+local lastFun = nil;
+
 do
     local btn = gui.button(frame, 25)
     btn:SetPoint('TOPLEFT', 5, -8)
@@ -132,6 +134,7 @@ do
             set_filter(current_search().filter_string)
         end
         execute()
+        lastFun = nil
     end)
     start_button = btn
 end
@@ -152,9 +155,21 @@ do
     btn:SetBackdropColor(aux.color.state.enabled())
     btn:SetText('Resume')
     btn:SetScript('OnClick', function()
-        execute(nil, true)
+        execute(nil, true,nil,lastFun)
     end)
     resume_button = btn
+end
+do
+    local btn = gui.button(frame)
+    btn:SetHeight(25)
+    btn:SetPoint('RIGHT', resume_button, 'LEFT', -4, 0)
+    btn:SetBackdropColor(aux.color.state.enabled())
+    btn:SetText('F')
+    btn:SetScript('OnClick', function()
+        -- set_filter(current_search().filter_string)
+        execute(nil,nil,nil,{})
+        lastFun = {}
+    end)
 end
 do
 	local editbox = gui.editbox(frame)

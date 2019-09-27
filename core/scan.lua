@@ -134,7 +134,37 @@ function submit_query(page)
     )
 end
 
+function process_auction_fun(auction, index, page)
+    if (not state.params.fun ) then
+        return true
+    end
+    -- 单个？一组
+    -- 条件2有种，一口价低于售价
+    if(auction.unit_buyout_price and auction.unit_buyout_price >0 and auction.unit_buyout_price < auction.basic.sell_price) then
+
+        return true
+    end
+    
+    -- 拍卖快结束了，但是拍卖价低于售价
+    if ( auction.duration <= 1 and  auction.unit_bid_price < auction.basic.sell_price)  then
+        -- print('物品',auction.name,'快到期了，拍卖价格',auction.bid_price, ',NPC 售价',auction.basic.sell_price)
+        -- 自动竞标或者一口价已经被禁止
+        -- 另外也得注意一下，是否已经竞价了。
+        -- if( not auction.high_bidder ) then
+        --     PlaceAuctionBid('list',index, auction.bid_price)
+        -- end
+        return true
+    end
+
+    return false
+end
+
 function process_auction(auction, index, page)
+    -- 这里应该调用 fun API 如果返回 true 则继续否者跳过
+    if(not process_auction_fun(auction, index, page)) then
+        return true
+    end
+
     history.process_auction(auction)
     if auction.owner or state.params.ignore_owner or aux.account_data.ignore_owner then -- TODO
         auction.index = index

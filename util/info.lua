@@ -91,7 +91,9 @@ function M.auction(index, query_type)
         local aux_quantity = charges or count
         local blizzard_bid = high_bid > 0 and high_bid or start_price
         local bid_price = high_bid > 0 and (high_bid + min_increment) or start_price
+        local basic = item(item_id,suffix_id)
         return {
+            basic = basic,
             item_id = item_id,
             suffix_id = suffix_id,
             unique_id = unique_id,
